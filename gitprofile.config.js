@@ -53,7 +53,7 @@ const config = {
     'Jenkins',
     'Oracle Agile PLM',
     'Oracle JET',
-    'Postman.
+    'Postman',
     'Spring Boot',
     'Spring',
     'Apache Kafka',
