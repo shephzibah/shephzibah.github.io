@@ -126,13 +126,13 @@ const config = {
   education: [
     {
       institution: 'Northeastern University',
-      degree: 'Master's Degree',
+      degree: 'Masters Degree',
       from: '2022',
       to: '2024',
     },
     {
       institution: 'Chaitanya Bharathi Institute of Technology',
-      degree: 'Bachelor's Degree',
+      degree: 'Bachelors Degree',
       from: '2016',
       to: '2020',
     },
