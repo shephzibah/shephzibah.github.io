@@ -78,6 +78,8 @@ const config = {
       from: 'Sep 2023',
       to: 'present',
       companyLink: 'https://www.northeastern.edu/',
+       description:
+        'Created a web-application to enable effective collaboration between drivers and warehouse management in effective tracking using DBMS queries and optimized route by 95% calculation examining distance, time of delivery, traffic, weight. Implemented an android application to enable Consumers and product interaction to provide access to keep a track on progress of delivery.',
     },
     {
       company: 'Nokia',
