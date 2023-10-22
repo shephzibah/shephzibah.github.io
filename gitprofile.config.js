@@ -11,7 +11,7 @@ const config = {
     },
   },
   social: {
-    linkedin: 'https://www.linkedin.com/in/hephzibah-saidu-30b627147/',
+    linkedin: '/hephzibah-saidu-30b627147/',
     twitter: '',
     outlook: 'saidu.h@northeastern.edu',
     facebook: '',
