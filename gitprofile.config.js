@@ -30,7 +30,7 @@ const config = {
   },
   resume: {
     fileUrl:
-      'Software_Engineer_HS.pdf', // Empty fileUrl will hide the `Download Resume` button.
+      'https://github.com/shephzibah/shephzibah.github.io/blob/main/Software_Engineer_HS.pdf', // Empty fileUrl will hide the `Download Resume` button.
   },
   skills: [
     'Java', 
