@@ -1,15 +1,532 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hephzibah Saidu - Software Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e2e8f0;
+        }
+        .hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #38bdf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        .glass-effect {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .scroll-animation {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .scroll-animation.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #38bdf8;
+            border: 4px solid #0a0a0a;
+            z-index: 1;
+        }
+        .timeline-line {
+            position: absolute;
+            left: -21px;
+            top: 5px;
+            bottom: 0;
+            width: 2px;
+            background-color: rgba(56, 189, 248, 0.3);
+        }
+
+        /* Hover effect for Name and Title */
+        .hero-title, .spotlight-text {
+            transition: all 0.3s ease-in-out;
+        }
+        .hero-title:hover {
+            transform: scale(1.03) translateY(-2px);
+            filter: brightness(1.1);
+        }
+        .spotlight-text:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Subtitle Spotlight Effect */
+        .spotlight-text {
+            position: relative;
+            color: #94a3b8; /* Muted color */
+            animation: fadeInText 2s ease-in-out forwards;
+        }
+        .spotlight-text::before {
+            content: 'Software Engineer | AI Enthusiast | Full-Stack Developer';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            color: #38bdf8;
+            -webkit-mask-image: linear-gradient(-75deg, rgba(0,0,0,0) 20%, #000 50%, rgba(0,0,0,0) 80%);
+            mask-image: linear-gradient(-75deg, rgba(0,0,0,0) 20%, #000 50%, rgba(0,0,0,0) 80%);
+            -webkit-mask-size: 200%;
+            mask-size: 200%;
+            animation: spotlight 4s linear infinite;
+        }
+        @keyframes spotlight {
+            from { -webkit-mask-position: 200%; mask-position: 200%; }
+            to { -webkit-mask-position: 0%; mask-position: 0%; }
+        }
+        @keyframes fadeInText {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Nav bar styles */
+        #navbar {
+            transition: top 0.3s, background-color 0.3s;
+        }
+
+        /* Card flip animation */
+        .flip-card { perspective: 1000px; }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .flip-card-back { 
+            transform: rotateY(180deg); 
+            align-items: flex-start;
+            text-align: left;
+        }
+        
+        /* Skill Tag style */
+        .skill-tag {
+            background-color: #1e293b;
+            color: #94a3b8;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+        }
+        .skill-tag:hover {
+            background-color: #38bdf8;
+            color: #0a0a0a;
+            transform: translateY(-2px);
+        }
+
+        /* Social Icon Hover Effect */
+        .social-icon {
+            transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+        .social-icon:hover {
+            transform: scale(1.15);
+            color: #38bdf8;
+        }
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav id="navbar" class="fixed w-full top-[-100px] z-50 glass-effect">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#" class="text-xl font-bold text-white">Hephzibah Saidu</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="nav-link text-slate-300 hover:text-sky-400 transition-colors">About</a>
+                <a href="#experience" class="nav-link text-slate-300 hover:text-sky-400 transition-colors">Experience</a>
+                <a href="#projects" class="nav-link text-slate-300 hover:text-sky-400 transition-colors">Projects</a>
+                <a href="#skills" class="nav-link text-slate-300 hover:text-sky-400 transition-colors">Skills</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative h-screen flex items-center justify-center text-center overflow-hidden">
+        <canvas class="hero-canvas"></canvas>
+        <div class="relative z-10 p-4">
+            <h1 class="hero-title text-4xl md:text-6xl font-black tracking-tight text-white cursor-pointer gradient-text mb-4">Hephzibah Saidu</h1>
+            <p class="spotlight-text mt-4 text-lg md:text-xl font-medium h-7 cursor-pointer">Software Engineer | AI Enthusiast | Full-Stack Developer</p>
+            <div class="mt-8 flex justify-center space-x-6">
+                <a href="https://github.com/shephzibah" target="_blank" rel="noopener noreferrer" class="social-icon text-slate-300">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12.014c0 4.425 2.865 8.169 6.838 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12.014C22 6.477 17.523 2 12 2z" clip-rule="evenodd" /></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/hephzibahs/" target="_blank" rel="noopener noreferrer" class="social-icon text-slate-300">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.25 6.5 1.75 1.75 0 016.5 8.25zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.64 1.64 0 0013 14.19a1.4 1.4 0 00-1 .95V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.96 3.36 4.42z" /></svg>
+                </a>
+                <a href="mailto:saiduhephzibah@gmail.com"  target="_blank" rel="noopener noreferrer" class="social-icon text-slate-300">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" /><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" /></svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-20 space-y-24 md:space-y-32">
+        <section id="about" class="scroll-animation">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">My Story</h2>
+            <div class="max-w-4xl mx-auto text-slate-300 leading-relaxed text-lg text-center">
+                <p class="mb-4">My journey in technology has always been driven by a desire to build things that are not just functional, but also fast, efficient, and secure. It’s a passion that took root during my undergraduate studies and was solidified when my team won the Smart India Hackathon, showing me the incredible impact of collaborative innovation.</p>
+                <p class="mb-4">After graduating, I joined Oracle as a Software Engineer. There, I got my first taste of enterprise-level challenges, leading the development of a Java-based application that improved data processing times by 20% and re-engineering a system's architecture to cut computing time by 45%.</p>
+                <p class="mb-4">Eager to deepen my expertise, I pursued a Master's in Computer Science at Northeastern University, where I truly immersed myself in the world of AI. This academic focus prepared me for my next steps at Nokia and now, as a Software Developer Engineer at Akamai, where I get to apply this blend of experience every day. It's the perfect environment to continue my story, and I’m always open to connecting with fellow professionals who are passionate about building the future of technology.</p>
+            </div>
+        </section>
+
+        <section id="experience" class="scroll-animation">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 gradient-text">Professional Journey</h2>
+            <div class="max-w-3xl mx-auto relative">
+                <div class="timeline-line"></div>
+                <div class="space-y-16">
+                    <div class="relative pl-8 timeline-item">
+                        <h3 class="text-2xl font-bold text-white">Software Developer Engineer</h3>
+                        <p class="text-sky-300 font-medium">Akamai Technologies | Jun 2024 - Present</p>
+                        <ul class="mt-4 list-disc list-inside text-slate-300 space-y-2">
+                            <li>Designed and deployed ServiceNow scripts to integrate an LLM-based bot classification system, achieving 92% detection accuracy.</li>
+                            <li>Automated CI/CD pipelines using Python, Jenkins, and Kubernetes, scaling applications to handle 30% more traffic and reducing vulnerabilities by 45%.</li>
+                            <li>Led incident root cause analysis across distributed systems using Kibana and New Relic, improving system uptime by 20%.</li>
+                             <li>Designed and implemented a content protection system using behavioral anomaly detection to reduce security breaches by 25%.</li>
+                        </ul>
+                    </div>
+                    <div class="relative pl-8 timeline-item">
+                        <h3 class="text-2xl font-bold text-white">Software Engineer Intern</h3>
+                        <p class="text-sky-300 font-medium">Nokia | Jan 2023 - Sep 2023</p>
+                        <ul class="mt-4 list-disc list-inside text-slate-300 space-y-2">
+                             <li>Engineered a scalable Python-based CI/CD framework, streamlining deployment across SR-OS & SR-Linux platforms and reducing manual intervention by 30%.</li>
+                             <li>Optimized a real-time PHP and JavaScript log-filtering system, increasing processing efficiency by 25%.</li>
+                             <li>Deployed and configured over 15 networking protocols using Docker, enhancing system integration and reducing setup time by 20%.</li>
+                        </ul>
+                    </div>
+                    <div class="relative pl-8 timeline-item">
+                        <h3 class="text-2xl font-bold text-white">Software Engineer (OCI) - II</h3>
+                        <p class="text-sky-300 font-medium">Oracle | Oct 2020 - Dec 2021</p>
+                        <ul class="mt-4 list-disc list-inside text-slate-300 space-y-2">
+                            <li>Led development of a Java-based application with Oracle JET to optimize CPQ pricing workflows, improving processing times by 20%.</li>
+                             <li>Re-engineered application architecture, reducing computing time by 45% and boosting overall system performance.</li>
+                             <li>Managed and validated over 50 deployment scripts for Oracle CPQ, ensuring a 90% success rate using Docker and Kubernetes.</li>
+                        </ul>
+                    </div>
+                     <div class="relative pl-8 timeline-item">
+                        <h3 class="text-2xl font-bold text-white">Software Developer Intern</h3>
+                        <p class="text-sky-300 font-medium">G.E. Appliances | Jan 2020 - Jun 2020</p>
+                        <ul class="mt-4 list-disc list-inside text-slate-300 space-y-2">
+                            <li>Engineered and automated key applications to boost system reliability and performance.</li>
+                            <li>Contributed to work that improved system reliability by 30% and reduced latency by 50%.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="scroll-animation">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">My Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="flip-card h-80">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front glass-effect rounded-lg p-6">
+                            <div class="flex items-center justify-center h-16 w-16 rounded-full bg-sky-900 mb-4">
+                               <svg class="w-8 h-8 text-sky-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125V14.25m-17.25 4.5h10.5a1.125 1.125 0 001.125-1.125V6.75a1.125 1.125 0 00-1.125-1.125H3.375A1.125 1.125 0 002.25 6.75v10.5a1.125 1.125 0 001.125 1.125z" /></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-white">Last-Mile Delivery Optimization</h3>
+                        </div>
+                        <div class="flip-card-back glass-effect rounded-lg p-6">
+                            <p class="text-slate-400 mb-4">Developed a system to optimize delivery routes using graph algorithms and real-time traffic data, reducing delivery times and fuel costs.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-slate-700 text-sky-300 text-xs font-semibold px-2.5 py-1 rounded-full">Java</span>
+                                <span class="bg-slate-700 text-sky-300 text-xs font-semibold px-2.5 py-1 rounded-full">Spring Boot</span>
+                                <span class="bg-slate-700 text-sky-300 text-xs font-semibold px-2.5 py-1 rounded-full">Google Maps API</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card h-80">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front glass-effect rounded-lg p-6">
+                            <div class="flex items-center justify-center h-16 w-16 rounded-full bg-sky-900 mb-4">
+                               <svg class="w-8 h-8 text-sky-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-white">Pinterest-Style Web App</h3>
+                        </div>
+                        <div class="flip-card-back glass-effect rounded-lg p-6">
+                            <p class="text-slate-400 mb-4">Built a full-stack, image-sharing web application with features like infinite scroll, user authentication, and cloud storage for media.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-slate-700 text-sky-300 text-xs font-semibold px-2.5 py-1 rounded-full">React</span>
+                                <span class="bg-slate-700 text-sky-300 text-xs font-semibold px-2.5 py-1 rounded-full">Node.js</span>
+                                <span class="bg-slate-700 text-sky-300 text-xs font-semibold px-2.5 py-1 rounded-full">MongoDB</span>
+                                <span class="bg-slate-700 text-sky-300 text-xs font-semibold px-2.5 py-1 rounded-full">AWS S3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card h-80">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front glass-effect rounded-lg p-6">
+                            <div class="flex items-center justify-center h-16 w-16 rounded-full bg-sky-900 mb-4">
+                                <svg class="w-8 h-8 text-sky-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-white">Distributed Chat System</h3>
+                        </div>
+                        <div class="flip-card-back glass-effect rounded-lg p-6">
+                            <p class="text-slate-400 mb-4">Architected a scalable, real-time chat application using a microservices architecture, WebSockets, and a message broker for high availability.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-slate-700 text-sky-300 text-xs font-semibold px-2.5 py-1 rounded-full">Go</span>
+                                <span class="bg-slate-700 text-sky-300 text-xs font-semibold px-2.5 py-1 rounded-full">WebSockets</span>
+                                <span class="bg-slate-700 text-sky-300 text-xs font-semibold px-2.5 py-1 rounded-full">RabbitMQ</span>
+                                <span class="bg-slate-700 text-sky-300 text-xs font-semibold px-2.5 py-1 rounded-full">Docker</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="flip-card h-80">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front glass-effect rounded-lg p-6">
+                            <div class="flex items-center justify-center h-16 w-16 rounded-full bg-purple-900 mb-4">
+                                <svg class="w-8 h-8 text-purple-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.115 5.19l.319 1.913A6 6 0 008.11 10.36L9.75 12l-.387.775c-.217.433-.132.956.21 1.298l1.348 1.348a.75.75 0 01-1.06 1.06l-1.347-1.347a.75.75 0 01-.21-1.298L9.75 12l-1.64-1.64A6 6 0 006.115 5.19z" /><path stroke-linecap="round" stroke-linejoin="round" d="M12.75 5.19l.319 1.913A6 6 0 0114.11 10.36L15.75 12l-.387.775c-.217.433-.132.956.21 1.298l1.348 1.348a.75.75 0 01-1.06 1.06l-1.347-1.347a.75.75 0 01-.21-1.298L15.75 12l-1.64-1.64A6 6 0 0112.75 5.19z" /></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-white">Real-Time Traffic Monitoring</h3>
+                        </div>
+                        <div class="flip-card-back glass-effect rounded-lg p-6">
+                            <p class="text-slate-400 mb-4">An IoT system using simulated sensors to stream traffic data to a central platform, processed and visualized on a live dashboard.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-slate-700 text-purple-300 text-xs font-semibold px-2.5 py-1 rounded-full">Python</span>
+                                <span class="bg-slate-700 text-purple-300 text-xs font-semibold px-2.5 py-1 rounded-full">Kafka</span>
+                                <span class="bg-slate-700 text-purple-300 text-xs font-semibold px-2.5 py-1 rounded-full">Grafana</span>
+                                <span class="bg-slate-700 text-purple-300 text-xs font-semibold px-2.5 py-1 rounded-full">IoT</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card h-80">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front glass-effect rounded-lg p-6">
+                            <div class="flex items-center justify-center h-16 w-16 rounded-full bg-purple-900 mb-4">
+                                <svg class="w-8 h-8 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 5.523-4.477 10-10 10S1 17.523 1 12 5.477 2 11 2s10 4.477 10 10z"></path></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-white">Sentiment Analysis of Reviews</h3>
+                        </div>
+                        <div class="flip-card-back glass-effect rounded-lg p-6">
+                            <p class="text-slate-400 mb-4">Designed an NLP pipeline to classify product reviews. Employed transformer models to capture nuanced language and achieve 92% accuracy.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-slate-700 text-purple-300 text-xs font-semibold px-2.5 py-1 rounded-full">Python</span>
+                                <span class="bg-slate-700 text-purple-300 text-xs font-semibold px-2.5 py-1 rounded-full">NLTK</span>
+                                <span class="bg-slate-700 text-purple-300 text-xs font-semibold px-2.5 py-1 rounded-full">Transformers</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card h-80">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front glass-effect rounded-lg p-6">
+                            <div class="flex items-center justify-center h-16 w-16 rounded-full bg-purple-900 mb-4">
+                                <svg class="w-8 h-8 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-white">Real-Time Facial Recognition</h3>
+                        </div>
+                        <div class="flip-card-back glass-effect rounded-lg p-6">
+                            <p class="text-slate-400 mb-4">Developed a facial recognition system with 95% accuracy using deep learning (CNNs) to identify individuals from video streams with low latency.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-slate-700 text-purple-300 text-xs font-semibold px-2.5 py-1 rounded-full">Python</span>
+                                <span class="bg-slate-700 text-purple-300 text-xs font-semibold px-2.5 py-1 rounded-full">OpenCV</span>
+                                <span class="bg-slate-700 text-purple-300 text-xs font-semibold px-2.5 py-1 rounded-full">TensorFlow</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="scroll-animation">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">Core Competencies</h2>
+            <div class="max-w-5xl mx-auto space-y-10">
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-4 text-center md:text-left">Languages & Databases</h3>
+                    <div class="flex flex-wrap justify-center md:justify-start gap-3">
+                        <span class="skill-tag">Java</span><span class="skill-tag">Python</span><span class="skill-tag">JavaScript</span><span class="skill-tag">TypeScript</span><span class="skill-tag">SQL</span><span class="skill-tag">Go</span><span class="skill-tag">C++</span><span class="skill-tag">PHP</span><span class="skill-tag">HTML/CSS</span><span class="skill-tag">MySQL</span><span class="skill-tag">PostgreSQL</span><span class="skill-tag">MongoDB</span><span class="skill-tag">Oracle</span><span class="skill-tag">Firebase</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-4 text-center md:text-left">AI / Machine Learning</h3>
+                    <div class="flex flex-wrap justify-center md:justify-start gap-3">
+                        <span class="skill-tag">TensorFlow</span><span class="skill-tag">PyTorch</span><span class="skill-tag">Scikit-Learn</span><span class="skill-tag">Keras</span><span class="skill-tag">Transformers</span><span class="skill-tag">OpenCV</span><span class="skill-tag">NLTK</span><span class="skill-tag">LLMs</span><span class="skill-tag">Data Analysis</span><span class="skill-tag">Deep Learning</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-4 text-center md:text-left">Frameworks & Libraries</h3>
+                    <div class="flex flex-wrap justify-center md:justify-start gap-3">
+                        <span class="skill-tag">Spring Boot</span><span class="skill-tag">React.js</span><span class="skill-tag">Node.js</span><span class="skill-tag">Angular</span><span class="skill-tag">Vue.js</span><span class="skill-tag">Django</span><span class="skill-tag">Flask</span><span class="skill-tag">Express.js</span><span class="skill-tag">jQuery</span><span class="skill-tag">Oracle JET</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-4 text-center md:text-left">DevOps, Cloud & Tools</h3>
+                    <div class="flex flex-wrap justify-center md:justify-start gap-3">
+                        <span class="skill-tag">Docker</span><span class="skill-tag">Kubernetes</span><span class="skill-tag">AWS</span><span class="skill-tag">Jenkins</span><span class="skill-tag">Ansible</span><span class="skill-tag">CI/CD</span><span class="skill-tag">Git</span><span class="skill-tag">Kafka</span><span class="skill-tag">ServiceNow</span><span class="skill-tag">Jira</span><span class="skill-tag">Postman</span><span class="skill-tag">Maven</span>
+                    </div>
+                </div>
+                 <div>
+                    <h3 class="text-xl font-bold text-white mb-4 text-center md:text-left">Concepts & Methodologies</h3>
+                    <div class="flex flex-wrap justify-center md:justify-start gap-3">
+                        <span class="skill-tag">System Design</span><span class="skill-tag">Microservices</span><span class="skill-tag">RESTful APIs</span><span class="skill-tag">Agile/Scrum</span><span class="skill-tag">Data Structures & Algorithms</span><span class="skill-tag">Object-Oriented Programming</span><span class="skill-tag">Design Patterns</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-900/50">
+        <div class="container mx-auto px-6 py-12 text-center">
+            <h2 class="text-3xl font-bold text-white mb-4">Let's Connect</h2>
+            <p class="text-slate-400 max-w-md mx-auto mb-8">I'm always open to discussing new projects, creative ideas, or opportunities to be part of an ambitious team. Feel free to reach out.</p>
+            <a href="mailto:saiduhephzibah@gmail.com" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-sky-500 to-purple-500 hover:from-sky-600 hover:to-purple-600 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 text-lg">
+                Get In Touch
+            </a>
+            <div class="mt-12 flex justify-center space-x-6">
+                 <a href="https://github.com/shephzibah" target="_blank" rel="noopener noreferrer" class="social-icon text-slate-400">
+                    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12.014c0 4.425 2.865 8.169 6.838 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12.014C22 6.477 17.523 2 12 2z" clip-rule="evenodd" /></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/hephzibahs/" target="_blank" rel="noopener noreferrer" class="social-icon text-slate-400">
+                    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.25 6.5 1.75 1.75 0 016.5 8.25zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.64 1.64 0 0013 14.19a1.4 1.4 0 00-1 .95V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.96 3.36 4.42z" /></svg>
+                </a>
+            </div>
+            <p class="text-slate-500 text-sm mt-12">&copy; 2024 Hephzibah Saidu. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Three.js background animation ---
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('.hero-canvas'), alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            const particlesGeometry = new THREE.BufferGeometry;
+            const particlesCount = 5000;
+            const posArray = new Float32Array(particlesCount * 3);
+
+            for (let i = 0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 7;
+            }
+
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.005,
+                color: 0x38bdf8 // Blue color for particles
+            });
+
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+            camera.position.z = 1.5;
+
+            let mouseX = 0;
+            let mouseY = 0;
+            document.addEventListener('mousemove', (event) => {
+                mouseX = event.clientX;
+                mouseY = event.clientY;
+            });
+
+            const clock = new THREE.Clock();
+            const animate = () => {
+                requestAnimationFrame(animate);
+                const elapsedTime = clock.getElapsedTime();
+                particlesMesh.rotation.y = -0.1 * elapsedTime;
+                
+                const targetX = mouseX * 0.0005;
+                const targetY = mouseY * 0.0005;
+                particlesMesh.rotation.y += 0.5 * (targetX - particlesMesh.rotation.y);
+                particlesMesh.rotation.x += 0.5 * (targetY - particlesMesh.rotation.x);
+
+                renderer.render(scene, camera);
+            };
+            animate();
+
+            window.addEventListener('resize', () => {
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+            });
+
+            // --- Navbar Logic ---
+            const navbar = document.getElementById('navbar');
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            const navObserver = new IntersectionObserver((entries) => {
+                 if (!entries[0].isIntersecting) {
+                    navbar.style.top = '0';
+                 } else {
+                    navbar.style.top = '-100px';
+                 }
+            }, { threshold: 0.1 });
+            navObserver.observe(document.querySelector('header'));
+
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            const isCurrent = link.getAttribute('href').substring(1) === entry.target.id;
+                            link.classList.toggle('text-sky-400', isCurrent);
+                            link.classList.toggle('text-slate-300', !isCurrent);
+                        });
+                    }
+                });
+            }, { rootMargin: '-50% 0px -50% 0px' });
+
+            sections.forEach(section => sectionObserver.observe(section));
+
+
+            // --- General Scroll animations ---
+            const scrollElements = document.querySelectorAll('.scroll-animation');
+            
+            const scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        scrollObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            scrollElements.forEach(el => scrollObserver.observe(el));
+        });
+    </script>
+</body>
 </html>
