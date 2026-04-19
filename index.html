@@ -13,17 +13,17 @@
     html { scroll-behavior: smooth; }
 
     :root {
-        --bg:        #04060f;
-        --glass:     rgba(255,255,255,0.035);
-        --glass-b:   rgba(255,255,255,0.07);
+        --bg:        #0a0e1a;
+        --glass:     rgba(255,255,255,0.04);
+        --glass-b:   rgba(255,255,255,0.08);
         --mint:      #6ee7b7;
         --rose:      #fda4af;
         --sky:       #93c5fd;
         --lavender:  #c4b5fd;
         --amber:     #fcd34d;
-        --text:      #e8eeff;
-        --muted:     #7b8db0;
-        --faint:     #2a3350;
+        --text:      #f0f4ff;
+        --muted:     #8fa3c0;
+        --faint:     #3a4660;
         --mono:      'Fira Code', monospace;
     }
 
@@ -32,7 +32,8 @@
         background: var(--bg);
         color: var(--text);
         overflow-x: hidden;
-        line-height: 1.6;
+        line-height: 1.65;
+        font-weight: 400;
     }
 
     /* ════════════════════════════
@@ -121,23 +122,6 @@
         to   { transform: translate(50px, 30px) scaleX(1.1); }
     }
 
-    /* ════════════════════════════
-       FIREFLIES
-    ════════════════════════════ */
-    .firefly {
-        position: fixed;
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 1;
-        opacity: 0;
-        animation: fireflyRise linear infinite;
-    }
-    @keyframes fireflyRise {
-        0%   { transform: translateY(0) translateX(0) scale(0.5);  opacity: 0; }
-        15%  { opacity: 1; }
-        85%  { opacity: 0.55; }
-        100% { transform: translateY(-110vh) translateX(var(--drift, 0px)) scale(1.3); opacity: 0; }
-    }
 
     /* ════════════════════════════
        SCROLLBAR
@@ -268,10 +252,10 @@
     @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
 
     .hero-desc {
-        font-size: 1rem;
+        font-size: 1.1rem;
         color: var(--muted);
-        line-height: 1.75;
-        max-width: 480px;
+        line-height: 1.85;
+        max-width: 520px;
         margin-bottom: 2.5rem;
     }
     .hero-desc strong { color: var(--text); font-weight: 600; }
@@ -309,14 +293,17 @@
     .btn-ghost:hover { border-color: var(--muted); color: var(--text); transform: translateY(-2px); }
 
     .hero-socials {
-        display: flex; gap: 1.25rem;
+        display: flex; gap: 1.5rem;
         margin-top: 3rem;
+        position: relative;
+        z-index: 20;
     }
     .hero-socials a {
-        color: var(--faint);
+        color: var(--mint);
         transition: color 0.25s, transform 0.25s;
+        opacity: 0.9;
     }
-    .hero-socials a:hover { color: var(--mint); transform: translateY(-3px); }
+    .hero-socials a:hover { color: var(--sky); transform: translateY(-3px); opacity: 1; }
 
     /* Hero 3D canvas */
     .hero-right {
@@ -395,21 +382,68 @@
        ABOUT
     ════════════════════════════ */
     .about-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 5rem;
-        align-items: start;
+        display: block;
     }
     .about-text p {
-        color: var(--muted); font-size: 1rem; line-height: 1.8;
-        margin-bottom: 1.1rem;
+        color: var(--muted); font-size: 1.1rem; line-height: 1.9;
+        margin-bottom: 1.3rem;
     }
     .about-text p .hl { color: var(--mint); font-weight: 600; }
     .about-text p .hl-rose { color: var(--rose); font-weight: 600; }
 
     .skill-chips {
-        display: flex; flex-wrap: wrap; gap: 0.6rem;
-        margin-top: 1.75rem;
+        display: none;
+    }
+
+    /* ════════════════════════════
+       SKILLS SECTION
+    ════════════════════════════ */
+    .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+    .skill-category {
+        background: rgba(110,231,183,0.05);
+        border: 1px solid rgba(110,231,183,0.15);
+        border-radius: 12px;
+        padding: 2rem;
+        transition: all 0.3s ease;
+    }
+    .skill-category:hover {
+        background: rgba(110,231,183,0.1);
+        border-color: rgba(110,231,183,0.3);
+        transform: translateY(-4px);
+    }
+    .skill-category-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--mint);
+        margin-bottom: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .skill-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+    }
+    .skill-tag {
+        display: inline-block;
+        background: rgba(196,181,253,0.1);
+        border: 1px solid rgba(196,181,253,0.3);
+        color: var(--lavender);
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+    .skill-tag:hover {
+        background: rgba(196,181,253,0.2);
+        border-color: rgba(196,181,253,0.6);
     }
     .chip {
         font-family: var(--mono);
@@ -699,7 +733,6 @@
     @media (max-width: 1024px) {
         #hero { padding: 6rem 2rem 3rem; gap: 3rem; }
         .section-wrap { padding: 5rem 2rem; }
-        .about-grid { grid-template-columns: 1fr; gap: 3rem; }
         .projects-grid { grid-template-columns: 1fr 1fr; }
         .hero-right { width: 300px; height: 300px; }
     }
@@ -760,7 +793,26 @@
         animation: blink 0.9s step-end infinite;
     }
 
-    /* ════════ RADAR ════════ */
+    /* ════════ SKILL NETWORK ════════ */
+    .skill-canvas-wrap {
+        background: rgba(110,231,183,0.02);
+        border: 1px solid rgba(110,231,183,0.1);
+        border-radius: 12px;
+        padding: 2rem;
+        margin-top: 2rem;
+        overflow: hidden;
+    }
+    .skill-canvas-wrap canvas {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        cursor: grab;
+    }
+    .skill-canvas-wrap canvas:active {
+        cursor: grabbing;
+    }
+
+    /* ════════ RADAR (OLD) ════════ */
     .radar-wrap {
         margin-top: 2.5rem;
         background: var(--glass);
@@ -861,6 +913,7 @@
     <a href="#" class="nav-logo">hephzibah</a>
     <ul class="nav-links">
         <li><a href="#about">about</a></li>
+        <li><a href="#skills">skills</a></li>
         <li><a href="#experience">experience</a></li>
         <li><a href="#projects">projects</a></li>
         <li><a href="#research">research</a></li>
@@ -942,55 +995,17 @@
                 <span class="chip">Pinecone · vLLM</span>
             </div>
         </div>
-        <div class="stat-grid fi" style="transition-delay:0.2s">
-            <div class="stat-tile">
-                <div class="stat-n" data-target="5" data-suffix="+">0</div>
-                <div class="stat-l">years of industry experience</div>
-            </div>
-            <div class="stat-tile">
-                <div class="stat-n" data-target="50" data-suffix="M+">0</div>
-                <div class="stat-l">dataset rows at Snap</div>
-            </div>
-            <div class="stat-tile">
-                <div class="stat-n" data-target="92" data-suffix="%">0</div>
-                <div class="stat-l">LLM triage accuracy at Akamai</div>
-            </div>
-            <div class="stat-tile">
-                <div class="stat-n" data-target="45" data-suffix="%">0</div>
-                <div class="stat-l">compute reduction at Oracle</div>
-            </div>
-        </div>
     </div>
-    <!-- Radar -->
-    <div class="radar-wrap fi" style="transition-delay:0.25s">
-        <canvas id="radarCanvas" width="200" height="200"></canvas>
-        <div class="radar-legend">
-            <div class="legend-item">
-                <div class="legend-dot" style="background:var(--mint)"></div>
-                <span class="legend-label">ML / AI Systems</span>
-                <span class="legend-val">95%</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-dot" style="background:var(--sky)"></div>
-                <span class="legend-label">Backend &amp; Distributed</span>
-                <span class="legend-val">90%</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-dot" style="background:var(--lavender)"></div>
-                <span class="legend-label">Cloud &amp; DevOps</span>
-                <span class="legend-val">85%</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-dot" style="background:var(--rose)"></div>
-                <span class="legend-label">LLM Tooling &amp; Evals</span>
-                <span class="legend-val">88%</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-dot" style="background:var(--amber)"></div>
-                <span class="legend-label">Full-Stack</span>
-                <span class="legend-val">75%</span>
-            </div>
-        </div>
+</div>
+</section>
+
+<!-- ════════════════════════════
+     SKILLS (Interactive Network)
+════════════════════════════ -->
+<section id="skills">
+<div class="section-wrap">
+    <div class="skill-canvas-wrap fi" style="transition-delay:0.1s">
+        <canvas id="skillCanvas" width="900" height="500"></canvas>
     </div>
 </div>
 </section>
@@ -1327,7 +1342,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const roles = [
         'Machine Learning Engineer',
         'LLM Systems Builder',
-        'Distributed Systems Nerd',
+        'Distributed Systems Engineer',
         'AI Infrastructure Engineer',
     ];
     let ri = 0, ci = 0, deleting = false;
@@ -1368,27 +1383,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     setInterval(rotateTicker, 3200);
 
-    // ── Aurora fireflies ──
-    const ffColors = ['#6ee7b7','#fda4af','#c4b5fd','#93c5fd','#fcd34d'];
-    for (let i = 0; i < 22; i++) {
-        const f = document.createElement('div');
-        f.className = 'firefly';
-        const size = 3 + Math.random() * 5;
-        const color = ffColors[Math.floor(Math.random() * ffColors.length)];
-        const drift = (Math.random() - 0.5) * 120;
-        f.style.cssText = [
-            `left:${Math.random()*100}vw`,
-            `bottom:${-10 - Math.random()*20}px`,
-            `width:${size}px`,
-            `height:${size}px`,
-            `background:${color}`,
-            `box-shadow:0 0 ${size*3}px ${size}px ${color}`,
-            `--drift:${drift}px`,
-            `animation-duration:${18 + Math.random()*22}s`,
-            `animation-delay:${Math.random()*20}s`
-        ].join(';');
-        document.body.appendChild(f);
-    }
 
     // ── Experience tabs ──
     document.querySelectorAll('.exp-pill').forEach(btn => {
@@ -1400,124 +1394,229 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+
     // ══════════════════════════════
-    // ANIMATED COUNTERS
+    // SKILL NETWORK - RADIAL HUB
     // ══════════════════════════════
-    function animateCounter(el) {
-        const target = +el.dataset.target;
-        const suffix = el.dataset.suffix || '';
-        const duration = 1800;
-        const start = performance.now();
-        function step(now) {
-            const progress = Math.min((now - start) / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            el.textContent = Math.floor(eased * target) + suffix;
-            if (progress < 1) requestAnimationFrame(step);
-            else el.textContent = target + suffix;
-        }
-        requestAnimationFrame(step);
+    const skillCanvas = document.getElementById('skillCanvas');
+    const sctx = skillCanvas.getContext('2d');
+    const sW = skillCanvas.width, sH = skillCanvas.height;
+    const sCx = sW / 2, sCy = sH / 2;
+
+    const skillData = {
+        'AI & LLM': { color: '#6ee7b7', skills: ['LangChain', 'Claude API', 'RAG', 'Agentic', 'Multi-modal', 'Embeddings'] },
+        'Backend': { color: '#93c5fd', skills: ['FastAPI', 'Spring Boot', 'Django', 'Node.js', 'REST APIs', 'GraphQL'] },
+        'Cloud': { color: '#c4b5fd', skills: ['Kubernetes', 'AWS', 'GCP', 'Azure', 'Terraform', 'Docker'] },
+        'Data': { color: '#fcd34d', skills: ['BigQuery', 'PostgreSQL', 'MongoDB', 'Elasticsearch', 'Spark', 'Pandas'] },
+        'DevOps': { color: '#a5f3fc', skills: ['CI/CD', 'Jenkins', 'GitOps', 'Monitoring', 'Grafana', 'Prometheus'] },
+        'Frontend': { color: '#86efac', skills: ['React', 'Next.js', 'Angular', 'Vue', 'Tailwind', 'Redux'] },
+        'LLM Evals': { color: '#fda4af', skills: ['RAGAS', 'LangSmith', 'LLM-Judge', 'W&B', 'Model Eval', 'Tracing'] },
+        'Systems': { color: '#f472b6', skills: ['Distributed', 'Microservices', 'Design', 'Go', 'Python', 'Java'] },
+    };
+
+    let currentView = 'main';
+    let bubbles = [];
+    let time = 0;
+
+    function initMainView() {
+        // Central Skills hub
+        bubbles = [{
+            name: 'Skills',
+            color: '#e8eeff',
+            baseX: sCx,
+            baseY: sCy,
+            x: sCx,
+            y: sCy,
+            size: 28,
+            isHub: true,
+            isCenter: true,
+        }];
+
+        // Add skill areas around center
+        Object.entries(skillData).forEach(([name, data], i) => {
+            const angle = (i / Object.keys(skillData).length) * Math.PI * 2;
+            // Size based on text length - larger with more padding
+            const baseSize = 26;
+            const size = Math.max(26, baseSize + (name.length * 1.8));
+            bubbles.push({
+                name,
+                color: data.color,
+                baseX: sCx + Math.cos(angle) * 140,
+                baseY: sCy + Math.sin(angle) * 110,
+                x: sCx,
+                y: sCy,
+                size: size,
+                skills: data.skills,
+                isHub: false,
+                isCenter: false,
+            });
+        });
     }
-    const counterObs = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-            if (e.isIntersecting && e.target.dataset.target) {
-                animateCounter(e.target);
-                counterObs.unobserve(e.target);
+
+    function initDetailView(areaName) {
+        const area = skillData[areaName];
+        const hubBubble = {
+            name: areaName,
+            color: area.color,
+            baseX: sCx,
+            baseY: sCy,
+            x: sCx,
+            y: sCy,
+            size: 26,
+            isHub: true,
+            isCenter: true,
+        };
+
+        bubbles = [hubBubble];
+
+        // Add skill bubbles around hub
+        area.skills.forEach((skill, i) => {
+            const angle = (i / area.skills.length) * Math.PI * 2;
+            // Size based on text length - larger with more padding
+            const baseSize = 22;
+            const size = Math.max(22, baseSize + (skill.length * 1.6));
+            bubbles.push({
+                name: skill,
+                color: area.color,
+                baseX: sCx + Math.cos(angle) * 130,
+                baseY: sCy + Math.sin(angle) * 100,
+                x: sCx,
+                y: sCy,
+                size: size,
+                isHub: false,
+                isCenter: false,
+            });
+        });
+    }
+
+    function updateBubbles() {
+        time += 0.016;
+        bubbles.forEach((b, i) => {
+            // Jiggle: subtle sine wave movement
+            const jiggleX = Math.sin(time * 2 + i) * 3;
+            const jiggleY = Math.cos(time * 2.3 + i * 0.5) * 3;
+            b.x = b.baseX + jiggleX;
+            b.y = b.baseY + jiggleY;
+        });
+    }
+
+    function drawRadial() {
+        sctx.clearRect(0, 0, sW, sH);
+
+        const hub = bubbles.find(b => b.isHub);
+        const centerX = hub ? hub.x : sCx;
+        const centerY = hub ? hub.y : sCy;
+
+        // Draw connections (hub to skills)
+        bubbles.forEach(b => {
+            if (!b.isHub) {
+                sctx.beginPath();
+                sctx.moveTo(centerX, centerY);
+                sctx.lineTo(b.x, b.y);
+                sctx.strokeStyle = b.color + '50';
+                sctx.lineWidth = 1;
+                sctx.stroke();
             }
         });
-    }, { threshold: 0.5 });
-    document.querySelectorAll('.stat-n[data-target]').forEach(el => counterObs.observe(el));
 
-    // ══════════════════════════════
-    // RADAR CHART
-    // ══════════════════════════════
-    const radarCanvas = document.getElementById('radarCanvas');
-    const rctx = radarCanvas.getContext('2d');
-    const rLabels = ['ML / AI', 'Backend', 'Cloud', 'LLM Evals', 'Full-Stack'];
-    const rValues = [0.95, 0.90, 0.85, 0.88, 0.75];
-    const rColors = ['#6ee7b7', '#93c5fd', '#c4b5fd', '#fda4af', '#fcd34d'];
-    const rW = radarCanvas.width, rH = radarCanvas.height;
-    const rCx = rW / 2, rCy = rH / 2;
-    const rRadius = Math.min(rW, rH) / 2 - 28;
-    const rSides = rLabels.length;
-    const rAngle = (Math.PI * 2) / rSides;
-    let radarProgress = 0;
+        // Draw bubbles
+        bubbles.forEach(b => {
+            // Glow
+            sctx.beginPath();
+            sctx.arc(b.x, b.y, b.size + 4, 0, Math.PI * 2);
+            sctx.fillStyle = b.color + (b.isCenter ? '35' : '20');
+            sctx.fill();
 
-    function getPoint(i, r) {
-        const a = i * rAngle - Math.PI / 2;
-        return { x: rCx + r * Math.cos(a), y: rCy + r * Math.sin(a) };
-    }
+            // Bubble
+            sctx.beginPath();
+            sctx.arc(b.x, b.y, b.size, 0, Math.PI * 2);
+            sctx.fillStyle = (b.isCenter ? b.color + '25' : b.color + '30');
+            sctx.fill();
+            sctx.strokeStyle = b.color + (b.isCenter ? 'cc' : '70');
+            sctx.lineWidth = b.isCenter ? 2.5 : 1.5;
+            sctx.stroke();
 
-    function drawRadar(progress) {
-        rctx.clearRect(0, 0, rW, rH);
-        // Grid rings
-        for (let ring = 1; ring <= 4; ring++) {
-            rctx.beginPath();
-            for (let i = 0; i < rSides; i++) {
-                const p = getPoint(i, rRadius * ring / 4);
-                i === 0 ? rctx.moveTo(p.x, p.y) : rctx.lineTo(p.x, p.y);
+            // Text - wrap intelligently
+            sctx.font = (b.isCenter ? 'bold 13px' : '12px') + ' Plus Jakarta Sans';
+            sctx.fillStyle = b.isCenter ? '#04060f' : '#f0f4ff';
+            sctx.textAlign = 'center';
+            sctx.textBaseline = 'middle';
+
+            // Wrap text for multi-word names
+            const words = b.name.split(' ');
+            if (words.length > 1) {
+                const mid = Math.ceil(words.length / 2);
+                const line1 = words.slice(0, mid).join(' ');
+                const line2 = words.slice(mid).join(' ');
+                sctx.fillText(line1, b.x, b.y - 7);
+                sctx.fillText(line2, b.x, b.y + 7);
+            } else {
+                sctx.fillText(b.name, b.x, b.y);
             }
-            rctx.closePath();
-            rctx.strokeStyle = 'rgba(255,255,255,0.06)';
-            rctx.lineWidth = 1;
-            rctx.stroke();
-        }
-        // Spokes
-        for (let i = 0; i < rSides; i++) {
-            const p = getPoint(i, rRadius);
-            rctx.beginPath();
-            rctx.moveTo(rCx, rCy);
-            rctx.lineTo(p.x, p.y);
-            rctx.strokeStyle = 'rgba(255,255,255,0.06)';
-            rctx.stroke();
-        }
-        // Data fill
-        rctx.beginPath();
-        for (let i = 0; i < rSides; i++) {
-            const p = getPoint(i, rRadius * rValues[i] * progress);
-            i === 0 ? rctx.moveTo(p.x, p.y) : rctx.lineTo(p.x, p.y);
-        }
-        rctx.closePath();
-        rctx.fillStyle = 'rgba(110,231,183,0.1)';
-        rctx.fill();
-        rctx.strokeStyle = 'rgba(110,231,183,0.5)';
-        rctx.lineWidth = 1.5;
-        rctx.stroke();
-        // Dots + glow
-        for (let i = 0; i < rSides; i++) {
-            const p = getPoint(i, rRadius * rValues[i] * progress);
-            rctx.beginPath();
-            rctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
-            rctx.fillStyle = rColors[i];
-            rctx.fill();
-        }
-        // Labels
-        for (let i = 0; i < rSides; i++) {
-            const p = getPoint(i, rRadius + 16);
-            rctx.font = '9px Fira Code, monospace';
-            rctx.fillStyle = 'rgba(168,178,209,0.7)';
-            rctx.textAlign = 'center';
-            rctx.textBaseline = 'middle';
-            rctx.fillText(rLabels[i], p.x, p.y);
+
+            b.clickRadius = b.size + 6;
+        });
+
+        // Back text if detail view
+        if (currentView !== 'main') {
+            sctx.font = '10px Plus Jakarta Sans';
+            sctx.fillStyle = 'rgba(240,244,255,0.4)';
+            sctx.textAlign = 'left';
+            sctx.fillText('← Back', 20, sH - 15);
+            window.backRect = { x: 15, y: sH - 25, w: 50, h: 20 };
         }
     }
 
-    // Animate radar on scroll into view
-    const radarObs = new IntersectionObserver(entries => {
+    skillCanvas.addEventListener('click', e => {
+        const rect = skillCanvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // Check back button
+        if (window.backRect) {
+            const b = window.backRect;
+            if (x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) {
+                currentView = 'main';
+                initMainView();
+                return;
+            }
+        }
+
+        // Check bubble click
+        bubbles.forEach(bubble => {
+            const dist = Math.sqrt((x - bubble.x) ** 2 + (y - bubble.y) ** 2);
+            if (dist <= bubble.clickRadius) {
+                if (currentView === 'main') {
+                    // Main view: click skill area to drill down
+                    if (skillData[bubble.name]) {
+                        currentView = bubble.name;
+                        initDetailView(bubble.name);
+                    }
+                } else if (currentView !== 'main' && bubble.isCenter) {
+                    // Detail view: click center hub to go back
+                    currentView = 'main';
+                    initMainView();
+                }
+            }
+        });
+    });
+
+    initMainView();
+
+    const skillObs = new IntersectionObserver(entries => {
         entries.forEach(e => {
             if (e.isIntersecting) {
-                const start = performance.now();
-                function animRadar(now) {
-                    radarProgress = Math.min((now - start) / 1000, 1);
-                    drawRadar(radarProgress);
-                    if (radarProgress < 1) requestAnimationFrame(animRadar);
+                function animate() {
+                    updateBubbles();
+                    drawRadial();
+                    requestAnimationFrame(animate);
                 }
-                requestAnimationFrame(animRadar);
-                radarObs.unobserve(e.target);
+                animate();
+                skillObs.unobserve(e.target);
             }
         });
-    }, { threshold: 0.3 });
-    radarObs.observe(radarCanvas);
-    drawRadar(0);
+    }, { threshold: 0.2 });
+    skillObs.observe(skillCanvas);
 
     // ══════════════════════════════
     // CURSOR TRAIL
