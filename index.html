@@ -148,12 +148,16 @@
         border-bottom: 1px solid rgba(255,255,255,0.05);
         padding: 1rem 4rem;
     }
+    .nav-left {
+        display: flex; align-items: center; gap: 3rem;
+    }
     .nav-logo {
         font-family: var(--mono);
         font-size: 0.9rem;
         color: var(--mint);
         text-decoration: none;
         letter-spacing: 0.05em;
+        white-space: nowrap;
     }
     .nav-links {
         display: flex; gap: 2.5rem;
@@ -168,6 +172,16 @@
         letter-spacing: 0.02em;
     }
     .nav-links a:hover { color: var(--text); }
+    .nav-right {
+        display: flex; gap: 1.5rem; align-items: center;
+    }
+    .nav-right a {
+        color: var(--muted);
+        transition: color 0.2s;
+        display: flex; align-items: center;
+        line-height: 1;
+    }
+    .nav-right a:hover { color: var(--mint); }
 
     /* ════════════════════════════
        FADE IN ANIMATION
@@ -234,11 +248,11 @@
 
     /* Typewriter role */
     .hero-role {
-        font-size: 1.3rem;
+        font-size: 1.1rem;
         font-weight: 400;
         color: var(--muted);
-        margin-bottom: 1.75rem;
-        min-height: 2rem;
+        margin-bottom: 1.5rem;
+        min-height: 1.8rem;
     }
     .typewriter-text { color: var(--rose); font-weight: 500; }
     .cursor {
@@ -252,10 +266,10 @@
     @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
 
     .hero-desc {
-        font-size: 1.1rem;
+        font-size: 1rem;
         color: var(--muted);
-        line-height: 1.85;
-        max-width: 520px;
+        line-height: 1.8;
+        max-width: 500px;
         margin-bottom: 2.5rem;
     }
     .hero-desc strong { color: var(--text); font-weight: 600; }
@@ -746,19 +760,10 @@
         .cert-row { grid-template-columns: 1fr; }
         #nav, #nav.scrolled { padding: 1rem 1.5rem; }
         .nav-links { display: none; }
-        .cursor-dot { display: none; }
         .radar-wrap { display: none; }
     }
 
     /* ════════ CURSOR TRAIL ════════ */
-    .cursor-dot {
-        position: fixed;
-        pointer-events: none;
-        border-radius: 50%;
-        z-index: 9999;
-        transform: translate(-50%, -50%);
-        mix-blend-mode: screen;
-    }
     @keyframes clickRipple {
         0%   { width:4px; height:4px; opacity:1; }
         100% { width:60px; height:60px; opacity:0; margin-left:-28px; margin-top:-28px; }
@@ -793,23 +798,28 @@
         animation: blink 0.9s step-end infinite;
     }
 
-    /* ════════ SKILL NETWORK ════════ */
-    .skill-canvas-wrap {
-        background: rgba(110,231,183,0.02);
-        border: 1px solid rgba(110,231,183,0.1);
-        border-radius: 12px;
-        padding: 2rem;
+    /* ════════ SKILLS TEXT ════════ */
+    .skills-text {
         margin-top: 2rem;
-        overflow: hidden;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem 3rem;
     }
-    .skill-canvas-wrap canvas {
-        display: block;
-        max-width: 100%;
-        height: auto;
-        cursor: grab;
+    .skill-group {
+        margin-bottom: 0;
     }
-    .skill-canvas-wrap canvas:active {
-        cursor: grabbing;
+    .skill-group h3 {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--mint);
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.02em;
+    }
+    .skill-group p {
+        font-size: 0.9rem;
+        color: var(--muted);
+        line-height: 1.6;
+        margin: 0;
     }
 
     /* ════════ RADAR (OLD) ════════ */
@@ -910,15 +920,28 @@
      NAVBAR
 ════════════════════════════ -->
 <nav id="nav">
-    <a href="#" class="nav-logo">hephzibah</a>
-    <ul class="nav-links">
-        <li><a href="#about">about</a></li>
-        <li><a href="#skills">skills</a></li>
-        <li><a href="#experience">experience</a></li>
-        <li><a href="#projects">projects</a></li>
-        <li><a href="#research">research</a></li>
-        <li><a href="#contact">contact</a></li>
-    </ul>
+    <div class="nav-left">
+        <a href="#" class="nav-logo">hephzibah</a>
+        <ul class="nav-links">
+            <li><a href="#about">about</a></li>
+            <li><a href="#skills">skills</a></li>
+            <li><a href="#experience">experience</a></li>
+            <li><a href="#projects">projects</a></li>
+            <li><a href="#research">research</a></li>
+            <li><a href="#contact">contact</a></li>
+        </ul>
+    </div>
+    <div class="nav-right">
+        <a href="mailto:hephzibahsaidu7@gmail.com" title="Email" aria-label="Email">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+        </a>
+        <a href="https://github.com/shephzibah" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12.014c0 4.425 2.865 8.169 6.838 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12.014C22 6.477 17.523 2 12 2z" clip-rule="evenodd"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/hephzibahs/" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.25 6.5 1.75 1.75 0 016.5 8.25zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.64 1.64 0 0013 14.19a1.4 1.4 0 00-1 .95V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.96 3.36 4.42z"/></svg>
+        </a>
+    </div>
 </nav>
 
 <!-- ════════════════════════════
@@ -927,7 +950,6 @@
 <section id="hero-section" style="position:relative;z-index:10">
 <div id="hero">
     <div class="hero-left fi">
-        <div class="hero-tag">open to new opportunities</div>
         <div class="ticker-bar">
             <span class="ticker-label">// currently building</span>
             <span class="ticker-text" id="tickerText">fine-tuning multimodal models at Snap</span>
@@ -943,21 +965,6 @@
         <p class="hero-desc">
             I build <strong>AI systems at scale</strong>. From high-throughput ML pipelines and visual embeddings to agentic LLM workflows and distributed infrastructure. Passionate about systems that think, adapt, and perform.
         </p>
-        <div class="hero-actions">
-            <a href="mailto:hephzibahsaidu7@gmail.com" class="btn-aurora">
-                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
-                Say Hello
-            </a>
-            <a href="https://www.linkedin.com/in/hephzibahs/" target="_blank" rel="noopener noreferrer" class="btn-ghost">LinkedIn ↗</a>
-        </div>
-        <div class="hero-socials">
-            <a href="https://github.com/shephzibah" target="_blank" rel="noopener noreferrer" title="GitHub">
-                <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12.014c0 4.425 2.865 8.169 6.838 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12.014C22 6.477 17.523 2 12 2z" clip-rule="evenodd"/></svg>
-            </a>
-            <a href="https://www.linkedin.com/in/hephzibahs/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
-                <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.25 6.5 1.75 1.75 0 016.5 8.25zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.64 1.64 0 0013 14.19a1.4 1.4 0 00-1 .95V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.96 3.36 4.42z"/></svg>
-            </a>
-        </div>
     </div>
 
     <div class="hero-right fi" style="transition-delay:0.25s">
@@ -1000,12 +1007,47 @@
 </section>
 
 <!-- ════════════════════════════
-     SKILLS (Interactive Network)
+     SKILLS
 ════════════════════════════ -->
 <section id="skills">
 <div class="section-wrap">
-    <div class="skill-canvas-wrap fi" style="transition-delay:0.1s">
-        <canvas id="skillCanvas" width="900" height="500"></canvas>
+    <div class="fi">
+        <div class="title-line"></div>
+        <h2 class="section-title">Technical Skills</h2>
+    </div>
+    <div class="skills-text fi" style="transition-delay:0.1s">
+        <div class="skill-group">
+            <h3>Languages</h3>
+            <p>Go · Java · Python · TypeScript · JavaScript · SQL · C/C++ · PHP · .NET · Kotlin · Bash · HTML/CSS</p>
+        </div>
+        <div class="skill-group">
+            <h3>AI & LLM Engineering</h3>
+            <p>LangChain · Anthropic Claude · OpenAI SDK · Agentic Workflows · RAG Pipelines · Multi-modal Models · PEFT Fine-tuning · Vector Embeddings · vLLM/Ollama · Pinecone</p>
+        </div>
+        <div class="skill-group">
+            <h3>ML Evaluation & Tools</h3>
+            <p>RAGAS · LangSmith · LLM-as-a-Judge · Weights & Biases · PyTorch · TensorFlow · GitHub Copilot · Cursor IDE</p>
+        </div>
+        <div class="skill-group">
+            <h3>Backend & APIs</h3>
+            <p>FastAPI · Spring Boot · Django · Flask · Node.js · Express · REST APIs · GraphQL · Microservices · Distributed Systems</p>
+        </div>
+        <div class="skill-group">
+            <h3>Cloud & Infrastructure</h3>
+            <p>AWS · GCP · Azure · OCI · Kubernetes · Docker · Terraform · GitOps · CI/CD · Jenkins</p>
+        </div>
+        <div class="skill-group">
+            <h3>Data & Databases</h3>
+            <p>BigQuery · PostgreSQL · MongoDB · Elasticsearch · Redis · Pandas/NumPy · Apache Spark · Hadoop · ETL</p>
+        </div>
+        <div class="skill-group">
+            <h3>Frontend</h3>
+            <p>React · Next.js · Angular · Vue.js · Tailwind CSS · Redux · Oracle JET</p>
+        </div>
+        <div class="skill-group">
+            <h3>Observability & Quality</h3>
+            <p>Prometheus · Grafana · New Relic · Splunk · SLO/SLI · JUnit/Mockito · Integration Testing · Unit Testing</p>
+        </div>
     </div>
 </div>
 </section>
@@ -1395,288 +1437,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // ══════════════════════════════
-    // SKILL NETWORK - RADIAL HUB
-    // ══════════════════════════════
-    const skillCanvas = document.getElementById('skillCanvas');
-    const sctx = skillCanvas.getContext('2d');
-    const sW = skillCanvas.width, sH = skillCanvas.height;
-    const sCx = sW / 2, sCy = sH / 2;
 
-    const skillData = {
-        'AI & LLM': { color: '#6ee7b7', skills: ['LangChain', 'Claude API', 'RAG', 'Agentic', 'Multi-modal', 'Embeddings'] },
-        'Backend': { color: '#93c5fd', skills: ['FastAPI', 'Spring Boot', 'Django', 'Node.js', 'REST APIs', 'GraphQL'] },
-        'Cloud': { color: '#c4b5fd', skills: ['Kubernetes', 'AWS', 'GCP', 'Azure', 'Terraform', 'Docker'] },
-        'Data': { color: '#fcd34d', skills: ['BigQuery', 'PostgreSQL', 'MongoDB', 'Elasticsearch', 'Spark', 'Pandas'] },
-        'DevOps': { color: '#a5f3fc', skills: ['CI/CD', 'Jenkins', 'GitOps', 'Monitoring', 'Grafana', 'Prometheus'] },
-        'Frontend': { color: '#86efac', skills: ['React', 'Next.js', 'Angular', 'Vue', 'Tailwind', 'Redux'] },
-        'LLM Evals': { color: '#fda4af', skills: ['RAGAS', 'LangSmith', 'LLM-Judge', 'W&B', 'Model Eval', 'Tracing'] },
-        'Systems': { color: '#f472b6', skills: ['Distributed', 'Microservices', 'Design', 'Go', 'Python', 'Java'] },
-    };
-
-    let currentView = 'main';
-    let bubbles = [];
-    let time = 0;
-
-    function initMainView() {
-        // Central Skills hub
-        bubbles = [{
-            name: 'Skills',
-            color: '#e8eeff',
-            baseX: sCx,
-            baseY: sCy,
-            x: sCx,
-            y: sCy,
-            size: 28,
-            isHub: true,
-            isCenter: true,
-        }];
-
-        // Add skill areas around center
-        Object.entries(skillData).forEach(([name, data], i) => {
-            const angle = (i / Object.keys(skillData).length) * Math.PI * 2;
-            // Size based on text length - larger with more padding
-            const baseSize = 26;
-            const size = Math.max(26, baseSize + (name.length * 1.8));
-            bubbles.push({
-                name,
-                color: data.color,
-                baseX: sCx + Math.cos(angle) * 140,
-                baseY: sCy + Math.sin(angle) * 110,
-                x: sCx,
-                y: sCy,
-                size: size,
-                skills: data.skills,
-                isHub: false,
-                isCenter: false,
-            });
-        });
-    }
-
-    function initDetailView(areaName) {
-        const area = skillData[areaName];
-        const hubBubble = {
-            name: areaName,
-            color: area.color,
-            baseX: sCx,
-            baseY: sCy,
-            x: sCx,
-            y: sCy,
-            size: 26,
-            isHub: true,
-            isCenter: true,
-        };
-
-        bubbles = [hubBubble];
-
-        // Add skill bubbles around hub
-        area.skills.forEach((skill, i) => {
-            const angle = (i / area.skills.length) * Math.PI * 2;
-            // Size based on text length - larger with more padding
-            const baseSize = 22;
-            const size = Math.max(22, baseSize + (skill.length * 1.6));
-            bubbles.push({
-                name: skill,
-                color: area.color,
-                baseX: sCx + Math.cos(angle) * 130,
-                baseY: sCy + Math.sin(angle) * 100,
-                x: sCx,
-                y: sCy,
-                size: size,
-                isHub: false,
-                isCenter: false,
-            });
-        });
-    }
-
-    function updateBubbles() {
-        time += 0.016;
-        bubbles.forEach((b, i) => {
-            // Jiggle: subtle sine wave movement
-            const jiggleX = Math.sin(time * 2 + i) * 3;
-            const jiggleY = Math.cos(time * 2.3 + i * 0.5) * 3;
-            b.x = b.baseX + jiggleX;
-            b.y = b.baseY + jiggleY;
-        });
-    }
-
-    function drawRadial() {
-        sctx.clearRect(0, 0, sW, sH);
-
-        const hub = bubbles.find(b => b.isHub);
-        const centerX = hub ? hub.x : sCx;
-        const centerY = hub ? hub.y : sCy;
-
-        // Draw connections (hub to skills)
-        bubbles.forEach(b => {
-            if (!b.isHub) {
-                sctx.beginPath();
-                sctx.moveTo(centerX, centerY);
-                sctx.lineTo(b.x, b.y);
-                sctx.strokeStyle = b.color + '50';
-                sctx.lineWidth = 1;
-                sctx.stroke();
-            }
-        });
-
-        // Draw bubbles
-        bubbles.forEach(b => {
-            // Glow
-            sctx.beginPath();
-            sctx.arc(b.x, b.y, b.size + 4, 0, Math.PI * 2);
-            sctx.fillStyle = b.color + (b.isCenter ? '35' : '20');
-            sctx.fill();
-
-            // Bubble
-            sctx.beginPath();
-            sctx.arc(b.x, b.y, b.size, 0, Math.PI * 2);
-            sctx.fillStyle = (b.isCenter ? b.color + '25' : b.color + '30');
-            sctx.fill();
-            sctx.strokeStyle = b.color + (b.isCenter ? 'cc' : '70');
-            sctx.lineWidth = b.isCenter ? 2.5 : 1.5;
-            sctx.stroke();
-
-            // Text - wrap intelligently
-            sctx.font = (b.isCenter ? 'bold 13px' : '12px') + ' Plus Jakarta Sans';
-            sctx.fillStyle = b.isCenter ? '#04060f' : '#f0f4ff';
-            sctx.textAlign = 'center';
-            sctx.textBaseline = 'middle';
-
-            // Wrap text for multi-word names
-            const words = b.name.split(' ');
-            if (words.length > 1) {
-                const mid = Math.ceil(words.length / 2);
-                const line1 = words.slice(0, mid).join(' ');
-                const line2 = words.slice(mid).join(' ');
-                sctx.fillText(line1, b.x, b.y - 7);
-                sctx.fillText(line2, b.x, b.y + 7);
-            } else {
-                sctx.fillText(b.name, b.x, b.y);
-            }
-
-            b.clickRadius = b.size + 6;
-        });
-
-        // Back text if detail view
-        if (currentView !== 'main') {
-            sctx.font = '10px Plus Jakarta Sans';
-            sctx.fillStyle = 'rgba(240,244,255,0.4)';
-            sctx.textAlign = 'left';
-            sctx.fillText('← Back', 20, sH - 15);
-            window.backRect = { x: 15, y: sH - 25, w: 50, h: 20 };
-        }
-    }
-
-    skillCanvas.addEventListener('click', e => {
-        const rect = skillCanvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        // Check back button
-        if (window.backRect) {
-            const b = window.backRect;
-            if (x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) {
-                currentView = 'main';
-                initMainView();
-                return;
-            }
-        }
-
-        // Check bubble click
-        bubbles.forEach(bubble => {
-            const dist = Math.sqrt((x - bubble.x) ** 2 + (y - bubble.y) ** 2);
-            if (dist <= bubble.clickRadius) {
-                if (currentView === 'main') {
-                    // Main view: click skill area to drill down
-                    if (skillData[bubble.name]) {
-                        currentView = bubble.name;
-                        initDetailView(bubble.name);
-                    }
-                } else if (currentView !== 'main' && bubble.isCenter) {
-                    // Detail view: click center hub to go back
-                    currentView = 'main';
-                    initMainView();
-                }
-            }
-        });
-    });
-
-    initMainView();
-
-    const skillObs = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-            if (e.isIntersecting) {
-                function animate() {
-                    updateBubbles();
-                    drawRadial();
-                    requestAnimationFrame(animate);
-                }
-                animate();
-                skillObs.unobserve(e.target);
-            }
-        });
-    }, { threshold: 0.2 });
-    skillObs.observe(skillCanvas);
-
-    // ══════════════════════════════
-    // CURSOR TRAIL
-    // ══════════════════════════════
-    const trailColors = ['#6ee7b7','#fda4af','#c4b5fd','#93c5fd','#fcd34d'];
-    const TRAIL = 14;
-    const dots = Array.from({ length: TRAIL }, (_, i) => {
-        const d = document.createElement('div');
-        d.className = 'cursor-dot';
-        const size = Math.round((TRAIL - i) * 2.2 + 2);
-        d.style.cssText = `width:${size}px;height:${size}px;background:${trailColors[i % trailColors.length]};opacity:0;mix-blend-mode:screen;transition:box-shadow 0.4s`;
-        document.body.appendChild(d);
-        return { el: d, x: -100, y: -100 };
-    });
-    let mPos = { x: -100, y: -100 };
-    let lastMoveTime = 0;
-    document.addEventListener('mousemove', e => {
-        mPos.x = e.clientX;
-        mPos.y = e.clientY;
-        lastMoveTime = Date.now();
-    }, { passive: true });
-
-    // click burst
-    document.addEventListener('click', e => {
-        const burst = document.createElement('div');
-        burst.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;width:4px;height:4px;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);background:transparent;border:2px solid #6ee7b7;animation:clickRipple 0.55s ease-out forwards`;
-        document.body.appendChild(burst);
-        setTimeout(() => burst.remove(), 600);
-    });
-
-    (function trailLoop() {
-        requestAnimationFrame(trailLoop);
-        const idle = Date.now() - lastMoveTime > 420;
-        const t = Date.now() / 1000;
-        let lx = mPos.x, ly = mPos.y;
-        dots.forEach((dot, i) => {
-            if (idle && mPos.x > 0) {
-                // orbit mode: each dot traces a small ellipse around cursor
-                const orbitR  = 6 + i * 3.2;
-                const phase   = (i / TRAIL) * Math.PI * 2;
-                const speed   = 0.8 + i * 0.04;
-                const tx = mPos.x + orbitR * Math.cos(t * speed + phase);
-                const ty = mPos.y + orbitR * Math.sin(t * speed + phase) * 0.6;
-                dot.x += (tx - dot.x) * 0.12;
-                dot.y += (ty - dot.y) * 0.12;
-                dot.el.style.opacity = (0.5 + 0.5 * Math.sin(t * 2 + i * 0.8)) * 0.75;
-                dot.el.style.boxShadow = `0 0 6px 2px ${trailColors[i % trailColors.length]}`;
-            } else {
-                // trail mode
-                const speed = 0.28 - i * 0.015;
-                dot.x += (lx - dot.x) * speed;
-                dot.y += (ly - dot.y) * speed;
-                dot.el.style.opacity = (1 - i / TRAIL) * 0.55;
-                dot.el.style.boxShadow = 'none';
-                lx = dot.x; ly = dot.y;
-            }
-            dot.el.style.left = dot.x + 'px';
-            dot.el.style.top  = dot.y + 'px';
-        });
-    })();
 
     // ════════════════════════════════════════
     // THREE.JS — Aurora Nebula (Hero)
